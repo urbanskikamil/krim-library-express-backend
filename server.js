@@ -11,7 +11,7 @@ require('dotenv/config')
 const thesisRoute = require('./routes/thesis')
 
 app.use(bodyParser.json())
-app.use('/', thesisRoute)
+app.use('/documents/thesis', thesisRoute)
 
 app.use(cors())
 app.use('/', () => console.log('Middleware running'))
@@ -20,6 +20,6 @@ app.use('/', () => console.log('Middleware running'))
 //connect to db
 mongoose.connect(process.env.DB_CONNECTION,
 { useNewUrlParser: true, useUnifiedTopology: true },
-() => console.log('connected to db'))
+() => console.log('Connected to remote MongoDB'))
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`KRIM Library express backend listening on port ${port}!`))
