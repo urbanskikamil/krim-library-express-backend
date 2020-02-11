@@ -7,6 +7,10 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 require('dotenv/config')
 
+const fileUpload = require('express-fileupload');
+
+app.use(fileUpload());
+
 //Import routes
 const thesisRoute = require('./routes/thesis')
 
@@ -16,6 +20,7 @@ app.use('/documents/thesis', thesisRoute)
 app.use(cors())
 app.use('/', () => console.log('Middleware running'))
 // app.use(express.json())
+
 
 //connect to db
 mongoose.connect(process.env.DB_CONNECTION,
