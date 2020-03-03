@@ -8,6 +8,7 @@ const ThesisSchema = mongoose.Schema({
   author: String,
   supervisor: String,
   addedAt: String,
+  file: String
 })
 
 module.exports = mongoose.model('Thesis', ThesisSchema)
