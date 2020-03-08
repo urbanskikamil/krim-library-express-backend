@@ -59,27 +59,23 @@ router.post('/', async (req, res) => {
 
 })
 
-//Get one record by id 
 
+let fileName = ''
+
+//Get id of a record
 router.get('/:recordId', async (req, res) => {
-  try {
-    const record = await Thesis.findById(req.params.recordId)
+    console.log(req.params.recordId)
+    const record = await Thesis.find({id: req.params.recordId})
+    fileName = record[0].file
     res.json(record)
-  }
-  catch(err) {
-    res.json({message: err})
-  }
 } )
 
 //Delete record 
-
 router.delete('/:recordId', async (req, res) => { 
   try {  
-    // const record = Thesis.findById(req.params.recordId)
-    // console.log(record)
     const deletedRecord = await Thesis.deleteOne({id: req.params.recordId})
     res.json(deletedRecord)
-    console.log(deletedRecord)
+    fs.unlinkSync(`${uri_thesis_files}${fileName}`)
   }
   catch(err) {
     res.json({message: err})
@@ -87,24 +83,20 @@ router.delete('/:recordId', async (req, res) => {
 })
 
 //Upload a file
-
 router.put('/upload', (req, res) => {
    console.log(req.files.file)
    if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).send('No files were uploaded.');
   }
   console.log(req)
-  //res.send(req.files.sampleFile)
-    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
   let file = req.files.file;
   let fileName = req.files.file.name;  
   
-  // Use the mv() method to place the file somewhere on your server
   file.mv(uri_thesis_files + fileName, 
-  (err) => {
-    if (err)
-      return res.status(500).send(err);
-  });
+    (err) => {
+      if (err)
+        return res.status(500).send(err);
+    });
 })
 
 module.exports = router
