@@ -13,9 +13,13 @@ app.use(fileUpload());
 
 //Import routes
 const thesisRoute = require('./routes/thesis')
+const publicationsRoute = require('./routes/publications')
+const studentsRoute = require('./routes/students')
 
 app.use(bodyParser.json())
 app.use('/documents/thesis', thesisRoute)
+app.use('/documents/publications', publicationsRoute)
+app.use('/documents/students', studentsRoute)
 
 app.use(cors())
 app.use('/', () => console.log('Middleware running'))

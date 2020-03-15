@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const ThesisSchema = mongoose.Schema({
+const PublicationsSchema = mongoose.Schema({
   id: String,
   type: String,
   title: String,
@@ -11,4 +11,4 @@ const ThesisSchema = mongoose.Schema({
   file: String
 })
 
-module.exports = mongoose.model('Thesis', ThesisSchema, 'theses')
+module.exports = mongoose.model('Publications', PublicationsSchema, 'publications')
