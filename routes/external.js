@@ -1,11 +1,11 @@
 const express = require('express')
 const cors = require('cors')
-const Students = require('../models/Students')
+const External = require('../models/external')
 var fs = require('fs');
 
 const router = express.Router();
 
-const uri_students_files = '/Users/kamil/Desktop/STUDIA/MAGISTER/Praca magisterska/krim-library-express-backend/public/images/students/'
+const uri_external_files = '/Users/kamil/Desktop/STUDIA/MAGISTER/Praca magisterska/krim-library-express-backend/public/images/external/'
 
 router.use(cors())
 
@@ -13,7 +13,7 @@ router.use(cors())
 
 router.get('/', async (req, res) => {
   try {
-    const documents = await Students.find()
+    const documents = await External.find()
     res.json(documents)
     console.log(documents)
   }
@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
 
 router.get('/download/:fileName', (req, res) => {
   try {
-    res.download(uri_students_files + req.params.fileName, req.params.fileName)
+    res.download(uri_external_files + req.params.fileName, req.params.fileName)
     console.log('Your file has been downloaded!')
   }
   catch(err) {
@@ -39,13 +39,13 @@ router.get('/download/:fileName', (req, res) => {
 router.post('/', async (req, res) => {
   console.log(req.body)
   
-  const document = new Students({
+  const document = new External({
     id: req.body.id,
     type: req.body.type,
     title: req.body.title,
     field: req.body.field,
     author: req.body.author,
-    studiesClass: req.body.studiesClass,
+    supervisor: req.body.supervisor,
     addedAt: req.body.addedAt,
     file: req.body.file
   })
@@ -65,7 +65,7 @@ let fileName = ''
 //Get id of a record
 router.get('/:recordId', async (req, res) => {
     console.log(req.params.recordId)
-    const record = await Students.find({id: req.params.recordId})
+    const record = await External.find({id: req.params.recordId})
     fileName = record[0].file
     res.json(record)
 } )
@@ -73,9 +73,9 @@ router.get('/:recordId', async (req, res) => {
 //Delete record 
 router.delete('/:recordId', async (req, res) => { 
   try {  
-    const deletedRecord = await Students.deleteOne({id: req.params.recordId})
+    const deletedRecord = await External.deleteOne({id: req.params.recordId})
     res.json(deletedRecord)
-    fs.unlinkSync(`${uri_students_files}${fileName}`)
+    fs.unlinkSync(`${uri_external_files}${fileName}`)
   }
   catch(err) {
     res.json({message: err})
@@ -92,7 +92,7 @@ router.put('/upload', (req, res) => {
   let file = req.files.file;
   let fileName = req.files.file.name;  
   
-  file.mv(uri_students_files + fileName, 
+  file.mv(uri_external_files + fileName, 
     (err) => {
       if (err)
         return res.status(500).send(err);
