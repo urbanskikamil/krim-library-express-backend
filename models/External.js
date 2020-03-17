@@ -6,7 +6,6 @@ const ExternalSchema = mongoose.Schema({
   title: String,
   field: String,
   author: String,
-  supervisor: String,
   addedAt: String,
   file: String
 })

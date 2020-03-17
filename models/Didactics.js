@@ -6,7 +6,7 @@ const DidacticsSchema = mongoose.Schema({
   title: String,
   field: String,
   author: String,
-  supervisor: String,
+  studiesClass: String,
   addedAt: String,
   file: String
 })
