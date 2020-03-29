@@ -5,6 +5,10 @@ const AuthSchema = mongoose.Schema({
   lastName: String,
   email: String,
   password: String,
+  position: String,
+  degree: String,
+  access: String,
+  accessLevel: Number
 })
 
 module.exports = mongoose.model('Auth', AuthSchema, 'auth')

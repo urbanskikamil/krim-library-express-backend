@@ -5,6 +5,7 @@ const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+//const session = require('express-session')
 require('dotenv/config')
 
 const fileUpload = require('express-fileupload');
@@ -18,6 +19,7 @@ const studentsRoute = require('./routes/students')
 const didacticsRoute = require('./routes/didactics')
 const externalRoute = require('./routes/external')
 const authRoute = require('./routes/auth')
+const accessRoute = require('./routes/access')
 
 app.use(bodyParser.json())
 app.use('/documents/thesis', thesisRoute)
@@ -26,6 +28,12 @@ app.use('/documents/students', studentsRoute)
 app.use('/documents/didactics', didacticsRoute)
 app.use('/documents/external', externalRoute)
 app.use('/login', authRoute)
+app.use('/requestAccess', accessRoute)
+// app.use(
+//   session({
+//       secret: 'my secret', resave: false, saveUninitialized: false, cookie: {test: 'test'}
+//   })
+// )
 
 app.use(cors())
 app.use('/', () => console.log('Middleware running'))
