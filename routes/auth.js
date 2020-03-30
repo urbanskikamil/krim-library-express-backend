@@ -4,33 +4,32 @@ const Auth = require('../models/Auth')
 const bcrypt = require('bcryptjs')
 const session = require('express-session')
 const MongoDBStore = require('connect-mongodb-session')(session)
-var ObjectId = require('mongodb').ObjectID;
-
-
-var fs = require('fs');
-
 const MONGODB_URI = 'mongodb+srv://krim-library:Thesis666@cluster0-nffek.mongodb.net/test?retryWrites=true&w=majority'
 
-const router = express.Router();
 const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: 'sessions',
   //expires:
 })
 
-router.use(
-  session({
-      secret: 'my secret', 
-      resave: false, 
-      saveUninitialized: false,
-      store: store, 
-      // cookie: {isAuthorized: true},
-      // unset: 'destroy'
-  })
-)
+const router = express.Router();
+
 router.use(cors({
   credentials: true
 }))
+
+router.use(
+  session({
+      secret: 'my secret', 
+      resave: true, 
+      saveUninitialized: false,
+      store: store, 
+      cookie: { maxAge: 24 * 60 * 60 * 1000, isAuthorized: true },
+      unset: 'destroy',
+      autoReconnect: true,
+      clear_interval: 3600
+  })
+)
 
 // Sign-in
 router.post('/sign-in', async (req, res) => {
@@ -70,18 +69,16 @@ router.get('/getData/:email', async (req, res) => {
 })
 
 // Logout
-router.post('/logout', (req, res) => {
-  console.log('id', req.body._id)
-  //const test = Session.find().then(result => console.log(result))
-  // Session.findOne({ session: { user: { email: 'kamilurb@gmail.com' }} })
-  // .then(result => console.log(result))
-  // Session.deleteOne({ session: { user: { email: req.body.email }}})
-  //   .then(session => {
-  //     console.log(session)
-  //   })
-  // console.log('body', req.body)
-  req.session.destroy()
-  res.redirect('/')
+router.get('/logout', (req, res) => {
+  // console.log('sesja',req.session)
+  req.session.destroy(err => {
+  //   console.log('error',err)
+  //   delete req.session;
+  
+     res.redirect('/login')
+  //   console.log('sesja2',req.session)
+
+   })
 })
 
 // Sign-up

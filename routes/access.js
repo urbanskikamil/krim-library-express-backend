@@ -13,7 +13,7 @@ router.use(cors({
 }))
 
 // Request for an access
-router.post('/:accessType/:accessLevel', async (req, res) => {
+router.post('/request/:accessType/:accessLevel', async (req, res) => {
   const newRequest = new Access({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -24,6 +24,7 @@ router.post('/:accessType/:accessLevel', async (req, res) => {
     accessLevel: req.params.accessLevel
   });
   console.log(newRequest)
+  res.send({ requestSent: true })
   return newRequest.save()
 })
 
@@ -40,9 +41,10 @@ router.get('/', async (req, res) => {
 
 // Delete a request
 router.post('/delete/:email', async (req, res) => {
-  Access.deleteMany({ email: req.params.email })
+  Access.deleteOne({ email: req.params.email })
     .then(deletedRequest => {
       console.log('deleted',deletedRequest)
+      return res.send({ deleted: true })
     })
 })
 
@@ -55,6 +57,7 @@ router.post('/accept/:email/:accessType/:accessLevel', async (req, res) => {
       Access.deleteMany({ email: req.params.email })
       .then(deletedRequest => {
         console.log('deleted',deletedRequest)
+        return res.send({ accepted: true })
       })
     })
 })
@@ -64,9 +67,9 @@ router.get('/check/:email', async (req, res) => {
   Access.findOne({ email: req.params.email })
     .then(request => {
       if (request) {
-        return res.send({ requestPending: true })
+        return res.send({ requestPending: true, requestType: request.requestedAccess })
       }
-      return res.send({ requestPending: false })
+      return res.send({ requestPending: false, requestType: null })
     })
 })
 
