@@ -10,7 +10,6 @@ const uri_students_files = '/Users/kamil/Desktop/STUDIA/MAGISTER/Praca magisters
 router.use(cors())
 
 //Get the list of all records from DB
-
 router.get('/', async (req, res) => {
   try {
     const documents = await Students.find()
@@ -23,7 +22,6 @@ router.get('/', async (req, res) => {
 })
 
 //Download a specific document by clicking on download icon
-
 router.get('/download/:fileName', (req, res) => {
   try {
     res.download(uri_students_files + req.params.fileName, req.params.fileName)
@@ -83,7 +81,7 @@ router.delete('/:recordId', async (req, res) => {
 })
 
 //Upload a file
-router.put('/upload', (req, res) => {
+router.put('/upload', async (req, res) => {
    console.log(req.files.file)
    if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).send('No files were uploaded.');
@@ -92,11 +90,12 @@ router.put('/upload', (req, res) => {
   let file = req.files.file;
   let fileName = req.files.file.name;  
   
-  file.mv(uri_students_files + fileName, 
+  await file.mv(uri_students_files + fileName, 
     (err) => {
       if (err)
         return res.status(500).send(err);
     });
+  res.send({fileUploaded: true})
 })
 
 module.exports = router

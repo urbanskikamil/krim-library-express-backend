@@ -83,7 +83,7 @@ router.delete('/:recordId', async (req, res) => {
 })
 
 //Upload a file
-router.put('/upload', (req, res) => {
+router.put('/upload', async (req, res) => {
    console.log(req.files.file)
    if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).send('No files were uploaded.');
@@ -92,11 +92,12 @@ router.put('/upload', (req, res) => {
   let file = req.files.file;
   let fileName = req.files.file.name;  
   
-  file.mv(uri_thesis_files + fileName, 
+  await file.mv(uri_thesis_files + fileName, 
     (err) => {
       if (err)
         return res.status(500).send(err);
     });
+  res.send({fileUploaded: true})
 })
 
 module.exports = router

@@ -10,7 +10,6 @@ const uri_didactics_files = '/Users/kamil/Desktop/STUDIA/MAGISTER/Praca magister
 router.use(cors())
 
 //Get the list of all records from DB
-
 router.get('/', async (req, res) => {
   try {
     const documents = await Didactics.find()
@@ -23,7 +22,6 @@ router.get('/', async (req, res) => {
 })
 
 //Download a specific document by clicking on download icon
-
 router.get('/download/:fileName', (req, res) => {
   try {
     res.download(uri_didactics_files + req.params.fileName, req.params.fileName)
@@ -97,6 +95,7 @@ router.put('/upload', (req, res) => {
       if (err)
         return res.status(500).send(err);
     });
+  res.send({fileUploaded: true})
 })
 
 module.exports = router
