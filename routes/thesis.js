@@ -1,11 +1,11 @@
 const express = require('express')
 const cors = require('cors')
+const path = require('path')
 const Thesis = require('../models/Thesis')
 var fs = require('fs');
 
 const router = express.Router();
-
-const uri_thesis_files = '/Users/kamil/Desktop/STUDIA/MAGISTER/Praca magisterska/krim-library-express-backend/public/images/thesis/'
+const uri_thesis_files = path.join(__dirname, '../public/images/thesis/')
 
 router.use(cors())
 
@@ -15,7 +15,6 @@ router.get('/', async (req, res) => {
   try {
     const documents = await Thesis.find()
     res.json(documents)
-    console.log(documents)
   }
   catch(err) {
     res.json({message: err})
@@ -64,7 +63,6 @@ let fileName = ''
 
 //Get id of a record
 router.get('/:recordId', async (req, res) => {
-    console.log(req.params.recordId)
     const record = await Thesis.find({id: req.params.recordId})
     fileName = record[0].file
     res.json(record)
@@ -84,20 +82,19 @@ router.delete('/:recordId', async (req, res) => {
 
 //Upload a file
 router.put('/upload', async (req, res) => {
-   console.log(req.files.file)
    if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).send('No files were uploaded.');
   }
-  console.log(req)
   let file = req.files.file;
-  let fileName = req.files.file.name;  
-  
+  let fileName = req.files.file.name; 
+
   await file.mv(uri_thesis_files + fileName, 
     (err) => {
       if (err)
         return res.status(500).send(err);
     });
   res.send({fileUploaded: true})
+  return
 })
 
 module.exports = router
