@@ -88,7 +88,8 @@ router.put('/upload', async (req, res) => {
     return res.status(400).send('No files were uploaded.');
   }
   let file = req.files.file;
-  let fileName = `${req.body.type.replace(/ /g,"_")}_${req.body.studentId}`; 
+
+  let fileName = `${req.body.type.replace(/ /g,"_")}_${req.body.studentId}.${req.files.file.name.split('.').pop()}`; 
 
   await file.mv(uri_thesis_files + fileName, 
     (err) => {
