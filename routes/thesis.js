@@ -36,7 +36,7 @@ router.get('/download/:fileName', (req, res) => {
 //Add a record to DB
 
 router.post('/', async (req, res) => {
-  console.log(req.body)
+  console.log('Request that is adding a record', req.body)
   
   const document = new Thesis({
     id: req.body.id,
@@ -44,6 +44,8 @@ router.post('/', async (req, res) => {
     title: req.body.title,
     field: req.body.field,
     author: req.body.author,
+    studentId: req.body.studentId,
+    uploaderId: req.body.uploaderId,
     supervisor: req.body.supervisor,
     addedAt: req.body.addedAt,
     file: req.body.file
@@ -86,7 +88,7 @@ router.put('/upload', async (req, res) => {
     return res.status(400).send('No files were uploaded.');
   }
   let file = req.files.file;
-  let fileName = req.files.file.name; 
+  let fileName = `${req.body.type.replace(/ /g,"_")}_${req.body.studentId}`; 
 
   await file.mv(uri_thesis_files + fileName, 
     (err) => {

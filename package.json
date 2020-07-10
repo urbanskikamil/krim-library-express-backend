@@ -1,6 +1,6 @@
 {
   "name": "krim-library-express-backend",
-  "version": "0.14.0",
+  "version": "1.0.0",
   "description": "Express backend for Krim Library App",
   "main": "server.js",
   "scripts": {

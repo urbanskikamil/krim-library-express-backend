@@ -41,6 +41,7 @@ router.post('/', async (req, res) => {
     title: req.body.title,
     field: req.body.field,
     studiesClass: req.body.studiesClass,
+    uploaderId: req.body.uploaderId,
     author: req.body.author,
     addedAt: req.body.addedAt,
     file: req.body.file

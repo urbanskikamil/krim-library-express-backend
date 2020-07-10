@@ -6,6 +6,7 @@ const StudentsSchema = mongoose.Schema({
   title: String,
   field: String,
   author: String,
+  uploaderId: String,
   studiesClass: String,
   addedAt: String,
   file: String

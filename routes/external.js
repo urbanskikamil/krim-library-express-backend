@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const path = require('path')
-const External = require('../models/external')
+const External = require('../models/External')
 var fs = require('fs');
 
 const router = express.Router();
@@ -41,6 +41,7 @@ router.post('/', async (req, res) => {
     title: req.body.title,
     field: req.body.field,
     author: req.body.author,
+    uploaderId: req.body.uploaderId,
     addedAt: req.body.addedAt,
     file: req.body.file
   })

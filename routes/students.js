@@ -41,6 +41,7 @@ router.post('/', async (req, res) => {
     title: req.body.title,
     field: req.body.field,
     author: req.body.author,
+    uploaderId: req.body.uploaderId,
     studiesClass: req.body.studiesClass,
     addedAt: req.body.addedAt,
     file: req.body.file
@@ -90,8 +91,7 @@ router.put('/upload', async (req, res) => {
       if (err)
         return res.status(500).send(err);
     });
-  res.send({fileUploaded: true})
-  return
+  return res.send({fileUploaded: true})
 })
 
 module.exports = router
